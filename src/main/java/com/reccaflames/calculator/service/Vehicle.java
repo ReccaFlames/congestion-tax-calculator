@@ -1,4 +1,4 @@
-package congestion.calculator;
+package com.reccaflames.calculator.service;
 
 import java.util.*;
 import java.text.*;
