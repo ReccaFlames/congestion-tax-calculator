@@ -1,13 +1,13 @@
 package com.reccaflames.calculator.service;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-@Service
+@Component
 public class CongestionTaxCalculator {
 
     private static final Map<String, Integer> tollFreeVehicles = new HashMap<>();
@@ -19,7 +19,6 @@ public class CongestionTaxCalculator {
         tollFreeVehicles.put("Diplomat", 3);
         tollFreeVehicles.put("Foreign", 4);
         tollFreeVehicles.put("Military", 5);
-
     }
     
     public int getTax(Vehicle vehicle, Date[] dates)
