@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import static com.reccaflames.calculator.DateTimeUtils.parseDates;
@@ -29,6 +30,7 @@ class CongestionTaxCalculatorControllerTest {
         ResponseEntity<CalculationResponse> result = restTemplate.postForEntity("http://localhost:" + localServerPort + "/api/calculations", request, CalculationResponse.class);
         //then
         var actual = result.getBody();
+        assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(actual).isEqualTo(new CalculationResponse(13));
     }
 }
