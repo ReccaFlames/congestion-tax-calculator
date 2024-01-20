@@ -1,4 +1,4 @@
-package com.reccaflames.calculator.service;
+package com.reccaflames.calculator.tax.fee;
 
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -8,7 +8,7 @@ import java.util.*;
 
 @Component
 @NoArgsConstructor
-public class DateFeeCalculator {
+public class DateFeeCalculator implements FeeCalculator {
 
     private static final List<LocalDate> holidays = Arrays.asList(
             LocalDate.of(2013, 1, 1),   // New Year's Day
@@ -53,7 +53,8 @@ public class DateFeeCalculator {
         return date.getMonth() == Month.JULY;
     }
 
-    public int calculate(LocalDateTime date) {
+    @Override
+    public int getFee(LocalDateTime date) {
         if (isTollFreeDate(date)) {
             return 0;
         }

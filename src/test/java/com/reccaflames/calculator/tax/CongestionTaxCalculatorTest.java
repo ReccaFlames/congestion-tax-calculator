@@ -1,5 +1,7 @@
-package com.reccaflames.calculator.service;
+package com.reccaflames.calculator.tax;
 
+import com.reccaflames.calculator.tax.fee.DateFeeCalculator;
+import com.reccaflames.calculator.model.Vehicle;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;

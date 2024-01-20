@@ -1,5 +1,7 @@
-package com.reccaflames.calculator.service;
+package com.reccaflames.calculator.tax;
 
+import com.reccaflames.calculator.tax.fee.FeeCalculator;
+import com.reccaflames.calculator.model.Vehicle;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -12,11 +14,11 @@ import java.util.Set;
 @Component
 @Slf4j
 @AllArgsConstructor
-public class CongestionTaxCalculator {
+public class CongestionTaxCalculator implements TaxCalculator {
 
     private static final Set<String> tollFreeVehicles = Set.of("Emergency", "Bus", "Diplomat", "Motorcycle", "Military", "Foreign");
 
-    private DateFeeCalculator dateFeeCalculator;
+    private FeeCalculator dateFeeCalculator;
 
     public int getTax(Vehicle vehicle, List<LocalDateTime> dates) {
         if (isTollFreeVehicle(vehicle)) {
@@ -26,8 +28,8 @@ public class CongestionTaxCalculator {
         int totalFee = 0;
 
         for (LocalDateTime date : dates) {
-            int nextFee = dateFeeCalculator.calculate(date);
-            int tempFee = dateFeeCalculator.calculate(intervalStart);
+            int nextFee = dateFeeCalculator.getFee(date);
+            int tempFee = dateFeeCalculator.getFee(intervalStart);
 
             var duration = Duration.between(intervalStart, date);
             long diffInMillies = duration.toMillis();

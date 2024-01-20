@@ -1,6 +1,6 @@
-package com.reccaflames.calculator.service;
+package com.reccaflames.calculator.model;
 
-public class Other implements Vehicle {
+class Other implements Vehicle {
 
     private final String type;
 

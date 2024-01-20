@@ -1,4 +1,4 @@
-package com.reccaflames.calculator.service;
+package com.reccaflames.calculator.tax.fee;
 
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -51,7 +51,7 @@ class DateFeeCalculatorTest {
     void shouldGetToolFee(LocalDateTime date, int expected) {
         //given
         //when
-        var result = calculator.calculate(date);
+        var result = calculator.getFee(date);
 
         //then
         assertThat(result).isEqualTo(expected);

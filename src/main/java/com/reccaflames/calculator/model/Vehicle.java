@@ -1,4 +1,4 @@
-package com.reccaflames.calculator.service;
+package com.reccaflames.calculator.model;
 
 public interface Vehicle {
 
