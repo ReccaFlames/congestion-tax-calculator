@@ -6,20 +6,15 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.stream.Stream;
 
+import static com.reccaflames.calculator.DateTimeUtils.parseDate;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class DateFeeCalculatorTest {
 
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     private final DateFeeCalculator calculator = new DateFeeCalculator();
-
-    private static LocalDateTime parseDate(String s) {
-        return LocalDateTime.parse(s, formatter);
-    }
 
     public Stream<Arguments> getDatesData() {
         return Stream.of(
