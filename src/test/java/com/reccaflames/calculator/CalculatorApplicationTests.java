@@ -1,4 +1,4 @@
-package com.reccaflames.calculator.service;
+package com.reccaflames.calculator;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
