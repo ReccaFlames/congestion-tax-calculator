@@ -65,10 +65,10 @@ public class DateFeeCalculator implements FeeCalculator {
             return 0;
         }
 
-        return getFee(date.toLocalTime());
+        return getFeeRate(date.toLocalTime());
     }
 
-    private int getFee(LocalTime time) {
+    private int getFeeRate(LocalTime time) {
         if (time == null) {
             throw new IllegalArgumentException("Input time cannot be null");
         }

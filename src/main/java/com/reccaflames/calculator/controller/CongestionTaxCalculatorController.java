@@ -6,6 +6,7 @@ import com.reccaflames.calculator.service.CongestionTaxCalculatorService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -15,15 +16,11 @@ import org.springframework.web.bind.annotation.*;
 public class CongestionTaxCalculatorController {
     private final CongestionTaxCalculatorService service;
 
-    @GetMapping
-    public String hello() {
-        log.atInfo().log("Say hello to log4j");
-        return "Hello world";
-    }
-
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public CalculationResponse calculate(@RequestBody CalculationRequest request) {
+    public ResponseEntity<CalculationResponse> calculate(@RequestBody CalculationRequest request) {
         log.atInfo().log("Calculate congestion tax for vehicle {} and dates {}", request.vehicleType(), request.dates());
-        return service.calculate(request);
+        var response = service.calculate(request);
+        log.atInfo().log("Calculated congestion tax for vehicle of type: {} is {}", request.vehicleType(), response.calculatedTax());
+        return ResponseEntity.ok(response);
     }
 }
