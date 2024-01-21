@@ -1,4 +1,4 @@
-package com.reccaflames.calculator.tax.fee;
+package com.reccaflames.calculator.tax;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -7,7 +7,7 @@ import java.time.LocalTime;
 
 @AllArgsConstructor
 @EqualsAndHashCode
-class TimeRange implements Comparable<TimeRange> {
+public class TimeRange implements Comparable<TimeRange> {
     private final LocalTime start;
     private final LocalTime end;
 

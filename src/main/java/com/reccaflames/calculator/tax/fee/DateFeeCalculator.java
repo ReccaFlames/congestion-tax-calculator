@@ -1,14 +1,13 @@
 package com.reccaflames.calculator.tax.fee;
 
-import com.reccaflames.calculator.entity.TaxRate;
-import com.reccaflames.calculator.repository.CityRepository;
-import com.reccaflames.calculator.repository.TaxRateRepository;
+import com.reccaflames.calculator.tax.TimeRange;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.time.*;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 @Component
 @AllArgsConstructor
@@ -27,24 +26,6 @@ public class DateFeeCalculator implements FeeCalculator {
             LocalDate.of(2013, 12, 25), // Christmas Day
             LocalDate.of(2013, 12, 26) // Christmas Day
     );
-    private static final Map<TimeRange, Integer> TIME_RANGES;
-
-    static {
-        Map<TimeRange, Integer> tempMap = new TreeMap<>();
-        tempMap.put(new TimeRange(LocalTime.of(6, 0), LocalTime.of(6, 29)), 8);
-        tempMap.put(new TimeRange(LocalTime.of(6, 30), LocalTime.of(6, 59)), 13);
-        tempMap.put(new TimeRange(LocalTime.of(7, 0), LocalTime.of(7, 59)), 18);
-        tempMap.put(new TimeRange(LocalTime.of(8, 0), LocalTime.of(8, 29)), 13);
-        tempMap.put(new TimeRange(LocalTime.of(8, 30), LocalTime.of(14, 59)), 8);
-        tempMap.put(new TimeRange(LocalTime.of(15, 0), LocalTime.of(15, 29)), 13);
-        tempMap.put(new TimeRange(LocalTime.of(15, 30), LocalTime.of(16, 59)), 18);
-        tempMap.put(new TimeRange(LocalTime.of(17, 0), LocalTime.of(17, 59)), 13);
-        tempMap.put(new TimeRange(LocalTime.of(18, 0), LocalTime.of(18, 29)), 8);
-        TIME_RANGES = Collections.unmodifiableMap(tempMap);
-    }
-
-    private final TaxRateRepository taxRateRepository;
-    private final CityRepository cityRepository;
 
     private static boolean isHoliday(LocalDateTime date) {
         return holidays.contains(date.toLocalDate());
@@ -60,39 +41,26 @@ public class DateFeeCalculator implements FeeCalculator {
     }
 
     @Override
-    public int getFee(LocalDateTime date) {
+    public int getFee(LocalDateTime date, Map<TimeRange, Integer> timeRanges) {
         if (isTollFreeDate(date)) {
             return 0;
         }
 
-        return getFeeRate(date.toLocalTime());
+        return getFeeRate(date.toLocalTime(), timeRanges);
     }
 
-    private int getFeeRate(LocalTime time) {
+    private int getFeeRate(LocalTime time, Map<TimeRange, Integer> timeRanges) {
         if (time == null) {
             throw new IllegalArgumentException("Input time cannot be null");
         }
 
-        return getTimeRanges().entrySet().stream()
+        return timeRanges.entrySet().stream()
                 .filter(entry -> entry.getKey().contains(time))
                 .findFirst()
                 .map(Map.Entry::getValue)
                 .orElse(0);
     }
 
-    private Map<TimeRange, Integer> getTimeRanges() {
-        return cityRepository.findCityByCodeAndCountry("GOT", "SWE")
-                .map(city -> taxRateRepository.findAllByCityId(city.getId())
-                        .stream()
-                        .collect(Collectors.toMap(
-                                tr -> new TimeRange(tr.getStartTime(), tr.getEndTime()),
-                                TaxRate::getRate,
-                                (existing, replacement) -> existing, // Merge function (keep existing in case of duplicates)
-                                TreeMap::new // Use TreeMap for sorting
-                        ))
-                )
-                .orElseGet(TreeMap::new);
-    }
 
     private boolean isTollFreeDate(LocalDateTime date) {
         if (isWeekend(date)) {

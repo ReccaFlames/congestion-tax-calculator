@@ -2,10 +2,14 @@ package com.reccaflames.calculator;
 
 import com.reccaflames.calculator.entity.City;
 import com.reccaflames.calculator.entity.TaxRate;
+import com.reccaflames.calculator.tax.TimeRange;
 
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class RepositoryValues {
     public static final UUID CITY_ID = UUID.fromString("69085902-6fba-433f-8442-74505b29c29c");
@@ -25,4 +29,12 @@ public class RepositoryValues {
             new TaxRate(UUID.randomUUID(), CITY_ID, LocalTime.of(17, 0), LocalTime.of(17, 59), 13),
             new TaxRate(UUID.randomUUID(), CITY_ID, LocalTime.of(18, 0), LocalTime.of(18, 29), 8)
     );
+
+    public static final Map<TimeRange, Integer> rangesMap = taxRates.stream()
+            .collect(Collectors.toMap(
+                    tr -> new TimeRange(tr.getStartTime(), tr.getEndTime()),
+                    TaxRate::getRate,
+                    (existing, replacement) -> existing,
+                    TreeMap::new
+            ));
 }

@@ -1,31 +1,22 @@
 package com.reccaflames.calculator.tax.fee;
 
-import com.reccaflames.calculator.repository.CityRepository;
-import com.reccaflames.calculator.repository.TaxRateRepository;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 import java.util.stream.Stream;
 
 import static com.reccaflames.calculator.DateTimeUtils.parseDate;
-import static com.reccaflames.calculator.RepositoryValues.*;
+import static com.reccaflames.calculator.RepositoryValues.rangesMap;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
 class DateFeeCalculatorTest {
 
-    @Mock
-    private CityRepository cityRepository;
-    @Mock
-    private TaxRateRepository taxRateRepository;
     @InjectMocks
     private DateFeeCalculator calculator;
 
@@ -68,11 +59,8 @@ class DateFeeCalculatorTest {
     @MethodSource("getDatesData")
     void shouldGetToolFee(LocalDateTime date, int expected) {
         //given
-        given(cityRepository.findCityByCodeAndCountry(CITY_CODE, COUNTRY)).willReturn(Optional.of(city));
-        given(taxRateRepository.findAllByCityId(CITY_ID)).willReturn(taxRates);
-
         //when
-        var result = calculator.getFee(date);
+        var result = calculator.getFee(date, rangesMap);
 
         //then
         assertThat(result).isEqualTo(expected);
@@ -83,7 +71,7 @@ class DateFeeCalculatorTest {
     void shouldReturnZeroForSpecialDays(LocalDateTime date, int expected) {
         //given
         //when
-        var result = calculator.getFee(date);
+        var result = calculator.getFee(date, rangesMap);
 
         //then
         assertThat(result).isEqualTo(expected);

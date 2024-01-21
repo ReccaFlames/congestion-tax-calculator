@@ -25,9 +25,11 @@ class CongestionTaxCalculatorControllerTest {
     void shouldCallCalculationsEndpoint() {
         //given
         var dates = parseDates("2013-02-14 14:59:00", "2013-02-14 15:05:00");
-        var request = new CalculationRequest("Car", dates);
+        var request = new CalculationRequest("Car", "GOT", "SWE", dates);
+
         //when
         ResponseEntity<CalculationResponse> result = restTemplate.postForEntity("http://localhost:" + localServerPort + "/api/calculations", request, CalculationResponse.class);
+
         //then
         var actual = result.getBody();
         assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);

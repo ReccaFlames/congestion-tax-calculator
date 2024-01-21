@@ -27,8 +27,8 @@ class CongestionTaxCalculatorTest {
     );
     private final CityRepository cityRepository = mock(CityRepository.class);
     private final TaxRateRepository taxRateRepository = mock(TaxRateRepository.class);
-    private final DateFeeCalculator feeCalculator = new DateFeeCalculator(taxRateRepository, cityRepository);
-    private final CongestionTaxCalculator calculator = new CongestionTaxCalculator(feeCalculator);
+    private final DateFeeCalculator feeCalculator = new DateFeeCalculator();
+    private final CongestionTaxCalculator calculator = new CongestionTaxCalculator(taxRateRepository, cityRepository, feeCalculator);
 
     private static Stream<Arguments> getVehiclesAndDates() {
         return Stream.of(
@@ -112,7 +112,7 @@ class CongestionTaxCalculatorTest {
         given(taxRateRepository.findAllByCityId(CITY_ID)).willReturn(taxRates);
 
         //when
-        int result = calculator.getTax(vehicle, dates);
+        int result = calculator.getTax(vehicle, dates, CITY_CODE, COUNTRY);
 
         //then
         assertThat(result).isEqualTo(expected);
@@ -123,7 +123,7 @@ class CongestionTaxCalculatorTest {
     void shouldReturnZeroForSpecialVehicles(Vehicle vehicle) {
         //given
         //when
-        var result = calculator.getTax(vehicle, datesSpecialVehicles);
+        var result = calculator.getTax(vehicle, datesSpecialVehicles, CITY_CODE, COUNTRY);
         //then
         assertThat(result).isZero();
     }
