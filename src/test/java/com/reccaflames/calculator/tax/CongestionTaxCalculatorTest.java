@@ -1,28 +1,36 @@
 package com.reccaflames.calculator.tax;
 
-import com.reccaflames.calculator.tax.fee.DateFeeCalculator;
 import com.reccaflames.calculator.model.Vehicle;
+import com.reccaflames.calculator.repository.CityRepository;
+import com.reccaflames.calculator.repository.TaxRateRepository;
+import com.reccaflames.calculator.tax.fee.DateFeeCalculator;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import static com.reccaflames.calculator.DateTimeUtils.parseDates;
+import static com.reccaflames.calculator.RepositoryValues.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.mock;
 
 class CongestionTaxCalculatorTest {
 
-    public static List<LocalDateTime> datesSpecialVehicles = parseDates(
+    private static final List<LocalDateTime> datesSpecialVehicles = parseDates(
             "2013-02-14 14:59:00",
             "2013-02-14 15:05:00"
     );
-    private final DateFeeCalculator feeCalculator = new DateFeeCalculator();
+    private final CityRepository cityRepository = mock(CityRepository.class);
+    private final TaxRateRepository taxRateRepository = mock(TaxRateRepository.class);
+    private final DateFeeCalculator feeCalculator = new DateFeeCalculator(taxRateRepository, cityRepository);
     private final CongestionTaxCalculator calculator = new CongestionTaxCalculator(feeCalculator);
 
-    public static Stream<Arguments> getVehiclesAndDates() {
+    private static Stream<Arguments> getVehiclesAndDates() {
         return Stream.of(
                 // Happy cases
                 Arguments.of(Vehicle.of("Car"), parseDates(
@@ -85,7 +93,7 @@ class CongestionTaxCalculatorTest {
         );
     }
 
-    public static Stream<Arguments> getSpecialVehicles() {
+    private static Stream<Arguments> getSpecialVehicles() {
         return Stream.of(
                 Arguments.of(Vehicle.of("Emergency")),
                 Arguments.of(Vehicle.of("Bus")),
@@ -100,6 +108,9 @@ class CongestionTaxCalculatorTest {
     @MethodSource("getVehiclesAndDates")
     void shouldGetTax(Vehicle vehicle, List<LocalDateTime> dates, int expected) {
         //given
+        given(cityRepository.findCityByCodeAndCountry(CITY_CODE, COUNTRY)).willReturn(Optional.of(city));
+        given(taxRateRepository.findAllByCityId(CITY_ID)).willReturn(taxRates);
+
         //when
         int result = calculator.getTax(vehicle, dates);
 

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.8.xsd">
+
+    <changeSet id="createCityTable" author="reccaflames">
+        <createTable tableName="City">
+            <column name="ID" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="code" type="TEXT(3)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="country" type="TEXT(3)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="TEXT(200)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="insertExampleData" author="reccaflames">
+        <insert tableName="City">
+            <column name="ID" value="82c90d57-9c2f-46e4-b170-dd48317252dc"/>
+            <column name="code" value="GOT"/>
+            <column name="country" value="SWE"/>
+            <column name="name" value="Goteborg"/>
+        </insert>
+        <insert tableName="City">
+            <column name="ID" value="70c07e30-52e2-4d40-ba5a-cbd4e3b3da2b"/>
+            <column name="code" value="KRK"/>
+            <column name="country" value="POL"/>
+            <column name="name" value="Krakow"/>
+        </insert>
+    </changeSet>
+
+
+</databaseChangeLog>

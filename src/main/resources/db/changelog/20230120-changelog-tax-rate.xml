@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.8.xsd">
+
+    <!-- Create TaxRate table -->
+    <changeSet id="createTaxRateTable" author="reccaflames">
+        <createTable tableName="tax_rate">
+            <column name="id" type="UUID">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="city_id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="start_time" type="TIME">
+                <constraints nullable="false"/>
+            </column>
+            <column name="end_time" type="TIME">
+                <constraints nullable="false"/>
+            </column>
+            <column name="rate" type="NUMERIC">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="tax_rate" baseColumnNames="city_id" referencedTableName="City"
+                                 referencedColumnNames="ID" constraintName="cit_id_foreign_key"/>
+    </changeSet>
+
+    <!-- Insert example data into TaxRate table -->
+    <changeSet id="insertExampleData" author="reccaflames">
+        <insert tableName="tax_rate">
+            <column name="id" value="0c57f24c-bbdc-4862-bdde-b37751dffc38"/>
+            <column name="city_id" value="82c90d57-9c2f-46e4-b170-dd48317252dc"/>
+            <column name="start_time" value="06:00:00"/>
+            <column name="end_time" value="06:29:59"/>
+            <column name="rate" value="8"/>
+        </insert>
+        <insert tableName="tax_rate">
+            <column name="id" value="e24a1333-d1c1-48a2-80b1-2ea2dee1f527"/>
+            <column name="city_id" value="82c90d57-9c2f-46e4-b170-dd48317252dc"/>
+            <column name="start_time" value="06:30:00"/>
+            <column name="end_time" value="06:59:59"/>
+            <column name="rate" value="13"/>
+        </insert>
+        <insert tableName="tax_rate">
+            <column name="id" value="dc2b3fee-1b0d-4064-ad87-e37f1b7f9974"/>
+            <column name="city_id" value="82c90d57-9c2f-46e4-b170-dd48317252dc"/>
+            <column name="start_time" value="07:00:00"/>
+            <column name="end_time" value="07:59:59"/>
+            <column name="rate" value="18"/>
+        </insert>
+        <insert tableName="tax_rate">
+            <column name="id" value="6de2278b-27de-4037-ac92-0443dccaef12"/>
+            <column name="city_id" value="82c90d57-9c2f-46e4-b170-dd48317252dc"/>
+            <column name="start_time" value="08:00:00"/>
+            <column name="end_time" value="08:29:59"/>
+            <column name="rate" value="13"/>
+        </insert>
+        <insert tableName="tax_rate">
+            <column name="id" value="ae213b93-69fc-4531-89c0-27c6ab50234d"/>
+            <column name="city_id" value="82c90d57-9c2f-46e4-b170-dd48317252dc"/>
+            <column name="start_time" value="08:30:00"/>
+            <column name="end_time" value="14:59:59"/>
+            <column name="rate" value="8"/>
+        </insert>
+        <insert tableName="tax_rate">
+            <column name="id" value="eeeab54e-7278-455c-b132-560a7ebaa4fb"/>
+            <column name="city_id" value="82c90d57-9c2f-46e4-b170-dd48317252dc"/>
+            <column name="start_time" value="15:00:00"/>
+            <column name="end_time" value="15:29:59"/>
+            <column name="rate" value="13"/>
+        </insert>
+        <insert tableName="tax_rate">
+            <column name="id" value="439a9da1-bc28-444c-b733-09081828ac00"/>
+            <column name="city_id" value="82c90d57-9c2f-46e4-b170-dd48317252dc"/>
+            <column name="start_time" value="15:30:00"/>
+            <column name="end_time" value="16:59:59"/>
+            <column name="rate" value="18"/>
+        </insert>
+        <insert tableName="tax_rate">
+            <column name="id" value="93f2a11c-92c2-45d1-abd8-a08d79663b85"/>
+            <column name="city_id" value="82c90d57-9c2f-46e4-b170-dd48317252dc"/>
+            <column name="start_time" value="17:00:00"/>
+            <column name="end_time" value="17:59:59"/>
+            <column name="rate" value="13"/>
+        </insert>
+        <insert tableName="tax_rate">
+            <column name="id" value="d1f97f4f-fe6c-4d87-8acb-a9e22774b779"/>
+            <column name="city_id" value="82c90d57-9c2f-46e4-b170-dd48317252dc"/>
+            <column name="start_time" value="18:00:00"/>
+            <column name="end_time" value="18:29:59"/>
+            <column name="rate" value="8"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>
